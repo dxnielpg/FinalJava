@@ -2,11 +2,11 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public class BibliotecaGerenciador {
+public class GerenciadorBiblioteca {
     private Biblioteca biblioteca;
     private Scanner scanner;
 
-    public BibliotecaGerenciador() {
+    public GerenciadorBiblioteca() {
         biblioteca = new Biblioteca();
         scanner = new Scanner(System.in);
     }
@@ -176,7 +176,7 @@ public class BibliotecaGerenciador {
     }
 
     public static void main(String[] args) {
-        BibliotecaGerenciador gerenciador = new BibliotecaGerenciador();
+        GerenciadorBiblioteca gerenciador = new GerenciadorBiblioteca();
         gerenciador.iniciar();
     }
 }
