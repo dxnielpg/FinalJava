@@ -1,22 +1,15 @@
 public class Categoria {
+    private String nome;
 
-    private String categoria;
-
-    
-    public Categoria(String categoria) {
-        this.categoria = categoria;
+    public Categoria(String nome) {
+        this.nome = nome;
     }
 
-    
-    public String getCategoria() {
-        return categoria;
+    public String getNome() {
+        return nome;
     }
 
-    
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
-
-    
-
 }

@@ -6,7 +6,7 @@ public class Emprestimo {
     private Livro livro;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucao;
-    
+
     public Emprestimo(int id, Usuario usuario, Livro livro, LocalDate dataEmprestimo, LocalDate dataDevolucao) {
         this.id = id;
         this.usuario = usuario;
@@ -57,8 +57,6 @@ public class Emprestimo {
 
     @Override
     public String toString() {
-        return "Emprestimo{" + "id=" + id + ", usuario=" + usuario +", livro=" + livro + ", dataEmprestimo=" + dataEmprestimo + ", dataDevolucao=" + dataDevolucao + '}';
-
+        return "Emprestimo{" + "id=" + id + ", usuario=" + usuario.getDetalhes() + ", livro=" + livro + ", dataEmprestimo=" + dataEmprestimo + ", dataDevolucao=" + dataDevolucao + '}';
     }
 }
-
