@@ -62,11 +62,16 @@ public class Biblioteca {
         }
         emprestimo.getLivro().setDisponivel(false);
         emprestimos.add(emprestimo);
+    
+        // Adicionar empréstimo ao histórico do usuário
+        emprestimo.getUsuario().adicionarEmprestimoAoHistorico(emprestimo);
     }
+    
 
     public void devolverEmprestimo(Emprestimo emprestimo) {
         emprestimo.getLivro().setDisponivel(true);
         emprestimos.remove(emprestimo);
+        
     }
 
     public List<Emprestimo> getEmprestimos() {
@@ -83,9 +88,9 @@ public class Biblioteca {
 
     // Métodos para salvar e carregar dados
     public void salvarDados() throws IOException {
-        persistenciaLivro.salvar(livros, "livros.txt");
-        persistenciaUsuario.salvar(usuarios, "usuarios.txt");
-        persistenciaEmprestimo.salvar(emprestimos, "emprestimos.txt");
+        persistenciaLivro.salvar(livros, "livros.dat");
+        persistenciaUsuario.salvar(usuarios, "usuarios.dat");
+        persistenciaEmprestimo.salvar(emprestimos, "emprestimos.dat");
     }
 
     public void carregarDados() throws IOException, ClassNotFoundException {

@@ -41,12 +41,15 @@ public class GerenciadorBiblioteca {
                     listarEmprestimos();
                     break;
                 case 8:
-                    salvarDados();
+                    exibirHistoricoEmprestimosUsuario();
                     break;
                 case 9:
-                    carregarDados();
+                    salvarDados();
                     break;
                 case 10:
+                    carregarDados();
+                    break;
+                case 11:
                     continuar = false;
                     break;
                 default:
@@ -66,9 +69,10 @@ public class GerenciadorBiblioteca {
         System.out.println("5. Listar Livros");
         System.out.println("6. Listar Usuários");
         System.out.println("7. Listar Empréstimos");
-        System.out.println("8. Salvar Dados");
-        System.out.println("9. Carregar Dados");
-        System.out.println("10. Sair");
+        System.out.println("8. Exibir Histórico de Empréstimos de Usuário");
+        System.out.println("9. Salvar Dados");
+        System.out.println("10. Carregar Dados");
+        System.out.println("11. Sair");
     }
 
     private void adicionarLivro() {
@@ -154,6 +158,17 @@ public class GerenciadorBiblioteca {
         System.out.println("Empréstimos:");
         for (Emprestimo emprestimo : biblioteca.getEmprestimos()) {
             System.out.println(emprestimo);
+        }
+    }
+
+    private void exibirHistoricoEmprestimosUsuario() {
+        String nomeUsuario = Console.lerString("Digite o nome do usuário:");
+        Usuario usuario = biblioteca.buscarUsuarioPorNome(nomeUsuario);
+    
+        if (usuario != null) {
+            usuario.exibirHistoricoEmprestimos();
+        } else {
+            System.out.println("Usuário não encontrado.");
         }
     }
 
