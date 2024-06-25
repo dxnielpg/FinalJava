@@ -1,4 +1,6 @@
+package Models;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Emprestimo {
     private int id;
@@ -59,4 +61,20 @@ public class Emprestimo {
     public String toString() {
         return "Emprestimo{" + "id=" + id + ", usuario=" + usuario.getDetalhes() + ", livro=" + livro + ", dataEmprestimo=" + dataEmprestimo + ", dataDevolucao=" + dataDevolucao + '}';
     }
+
+    public static Emprestimo fromString(String linha) {
+        String[] partes = linha.split(";");
+        if (partes.length == 5) {
+            int id = Integer.parseInt(partes[0]);
+            Usuario usuario = Usuario.fromString(partes[1]);
+            Livro livro = Livro.fromString(partes[2]);
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+            LocalDate dataEmprestimo = LocalDate.parse(partes[3], formatter);
+            LocalDate dataDevolucao = LocalDate.parse(partes[4], formatter);
+            return new Emprestimo(id, usuario, livro, dataEmprestimo, dataDevolucao);
+        } else {
+            throw new IllegalArgumentException("String de entrada inválida para criar um Emprestimo");
+        }
+    }
+        
 }

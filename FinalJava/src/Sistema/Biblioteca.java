@@ -1,11 +1,19 @@
+package Sistema;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import Models.Autor;
+import Models.Emprestimo;
+import Models.Livro;
+import Models.Usuario;
+import Persistencia.BibliotecaPersistencia;
 
 public class Biblioteca {
     private List<Livro> livros;
     private List<Usuario> usuarios;
     private List<Emprestimo> emprestimos;
+    private List<Autor> autores;
     private BibliotecaPersistencia<Livro> persistenciaLivro;
     private BibliotecaPersistencia<Usuario> persistenciaUsuario;
     private BibliotecaPersistencia<Emprestimo> persistenciaEmprestimo;
@@ -14,9 +22,41 @@ public class Biblioteca {
         this.livros = new ArrayList<>();
         this.usuarios = new ArrayList<>();
         this.emprestimos = new ArrayList<>();
-        this.persistenciaLivro = new BibliotecaPersistencia<>();
-        this.persistenciaUsuario = new BibliotecaPersistencia<>();
-        this.persistenciaEmprestimo = new BibliotecaPersistencia<>();
+        this.autores = new ArrayList<>();
+        this.persistenciaLivro = new BibliotecaPersistencia<>(new BibliotecaPersistencia.Converter<>() {
+            @Override
+            public String toString(Livro livro) {
+                return livro.toString();
+            }
+
+            @Override
+            public Livro fromString(String str) {
+                return Livro.fromString(str);
+            }
+        });
+        this.persistenciaUsuario = new BibliotecaPersistencia<>(new BibliotecaPersistencia.Converter<>() {
+            @Override
+            public String toString(Usuario usuario) {
+                return usuario.toString();
+            }
+
+            @Override
+            public Usuario fromString(String str) {
+                return Usuario.fromString(str);
+            }
+        });
+        this.persistenciaEmprestimo = new BibliotecaPersistencia<>(new BibliotecaPersistencia.Converter<>() {
+            @Override
+            public String toString(Emprestimo emprestimo) {
+                return emprestimo.toString();
+            }
+
+            @Override
+            public Emprestimo fromString(String str) {
+                return Emprestimo.fromString(str);
+            }
+        });
+
     }
 
     // Métodos para gerenciar livros
@@ -62,16 +102,14 @@ public class Biblioteca {
         }
         emprestimo.getLivro().setDisponivel(false);
         emprestimos.add(emprestimo);
-    
+
         // Adicionar empréstimo ao histórico do usuário
         emprestimo.getUsuario().adicionarEmprestimoAoHistorico(emprestimo);
     }
-    
 
     public void devolverEmprestimo(Emprestimo emprestimo) {
         emprestimo.getLivro().setDisponivel(true);
         emprestimos.remove(emprestimo);
-        
     }
 
     public List<Emprestimo> getEmprestimos() {
@@ -86,16 +124,38 @@ public class Biblioteca {
         return usuarios;
     }
 
-    // Métodos para salvar e carregar dados
-    public void salvarDados() throws IOException {
-        persistenciaLivro.salvar(livros, "livros.dat");
-        persistenciaUsuario.salvar(usuarios, "usuarios.dat");
-        persistenciaEmprestimo.salvar(emprestimos, "emprestimos.dat");
+    // Métodos para gerenciar autores
+    public void adicionarAutor(Autor autor) {
+        autores.add(autor);
     }
 
-    public void carregarDados() throws IOException, ClassNotFoundException {
-        livros = persistenciaLivro.carregar("livros.dat");
-        usuarios = persistenciaUsuario.carregar("usuarios.dat");
-        emprestimos = persistenciaEmprestimo.carregar("emprestimos.dat");
+    public void removerAutor(Autor autor) {
+        autores.remove(autor);
+    }
+
+    public Autor buscarAutorPorNome(String nome) {
+        for (Autor autor : autores) {
+            if (autor.getNome().equalsIgnoreCase(nome)) {
+                return autor;
+            }
+        }
+        return null;
+    }
+
+    public List<Autor> getAutores() {
+        return autores;
+    }
+
+    // Métodos para salvar e carregar dados
+    public void salvarDados() throws IOException {
+        persistenciaLivro.salvar(livros, "livros.txt");
+        persistenciaUsuario.salvar(usuarios, "usuarios.txt");
+        persistenciaEmprestimo.salvar(emprestimos, "emprestimos.txt");
+    }
+
+    public void carregarDados() throws IOException {
+        livros = persistenciaLivro.carregar("livros.txt");
+        usuarios = persistenciaUsuario.carregar("usuarios.txt");
+        emprestimos = persistenciaEmprestimo.carregar("emprestimos.txt");
     }
 }
