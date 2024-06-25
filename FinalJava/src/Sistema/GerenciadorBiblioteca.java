@@ -1,6 +1,13 @@
+package Sistema;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
+
+import Models.Autor;
+import Models.Categoria;
+import Models.Emprestimo;
+import Models.Livro;
+import Models.Usuario;
 
 public class GerenciadorBiblioteca {
     private Biblioteca biblioteca;
@@ -78,17 +85,29 @@ public class GerenciadorBiblioteca {
     private void adicionarLivro() {
         String titulo = Console.lerString("Digite o título do livro:");
         String nomeAutor = Console.lerString("Digite o nome do autor:");
-        String emailAutor = Console.lerString("Digite o email do autor:");
-        String biografiaAutor = Console.lerString("Digite a biografia do autor:");
+    
+        Autor autorExistente = biblioteca.buscarAutorPorNome(nomeAutor);
+    
+        if (autorExistente != null) {
+            System.out.println("Autor encontrado na biblioteca.");
+        } else {
+            
+            String emailAutor = Console.lerString("Digite o email do autor:");
+            String biografiaAutor = Console.lerString("Digite a biografia do autor:");
+            autorExistente = new Autor(nomeAutor, emailAutor, biografiaAutor);
+            biblioteca.adicionarAutor(autorExistente); // Adiciona o autor à biblioteca
+            System.out.println("Novo autor adicionado à biblioteca.");
+        }
+    
         String nomeCategoria = Console.lerString("Digite o nome da categoria:");
-
-        Autor autor = new Autor(nomeAutor, emailAutor, biografiaAutor);
         Categoria categoria = new Categoria(nomeCategoria);
-        Livro livro = new Livro(titulo, autor, categoria);
-
+    
+        Livro livro = new Livro(titulo, autorExistente, categoria);
         biblioteca.adicionarLivro(livro);
+    
         System.out.println("Livro adicionado com sucesso!");
     }
+    
 
     private void adicionarUsuario() {
         String nome = Console.lerString("Digite o nome do usuário:");
@@ -164,7 +183,7 @@ public class GerenciadorBiblioteca {
     private void exibirHistoricoEmprestimosUsuario() {
         String nomeUsuario = Console.lerString("Digite o nome do usuário:");
         Usuario usuario = biblioteca.buscarUsuarioPorNome(nomeUsuario);
-    
+
         if (usuario != null) {
             usuario.exibirHistoricoEmprestimos();
         } else {
@@ -185,7 +204,7 @@ public class GerenciadorBiblioteca {
         try {
             biblioteca.carregarDados();
             System.out.println("Dados carregados com sucesso!");
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             System.out.println("Erro ao carregar dados: " + e.getMessage());
         }
     }

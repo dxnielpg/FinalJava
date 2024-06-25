@@ -1,3 +1,4 @@
+package Models;
 public class Categoria {
     private String nome;
 
@@ -11,5 +12,14 @@ public class Categoria {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+    
+    @Override
+    public String toString() {
+        return nome;
+    }
+
+    public static Categoria fromString(String linha) {
+        return new Categoria(linha);
     }
 }
