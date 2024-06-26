@@ -35,12 +35,11 @@ public class Livro {
 
     @Override
     public String toString() {
-        return "Livro{" +
-                "titulo='" + titulo + '\'' +
-                ", autor=" + autor.getNome() +
-                ", categoria=" + categoria +
-                ", disponivel=" + disponivel +
-                '}';
+        return "Livro\n " +
+                "Titulo: " + titulo +
+                ", Autor: " + autor.getNome() +
+                ", Categoria: " + categoria +
+                ", Disponibilidade: " + disponivel;
     }
 
     public static Livro fromString(String linha) {

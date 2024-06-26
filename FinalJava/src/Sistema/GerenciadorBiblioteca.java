@@ -1,4 +1,5 @@
 package Sistema;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -54,9 +55,6 @@ public class GerenciadorBiblioteca {
                     salvarDados();
                     break;
                 case 10:
-                    carregarDados();
-                    break;
-                case 11:
                     continuar = false;
                     break;
                 default:
@@ -78,8 +76,7 @@ public class GerenciadorBiblioteca {
         System.out.println("7. Listar Empréstimos");
         System.out.println("8. Exibir Histórico de Empréstimos de Usuário");
         System.out.println("9. Salvar Dados");
-        System.out.println("10. Carregar Dados");
-        System.out.println("11. Sair");
+        System.out.println("10. Sair");
     }
 
     private void adicionarLivro() {
@@ -91,7 +88,6 @@ public class GerenciadorBiblioteca {
         if (autorExistente != null) {
             System.out.println("Autor encontrado na biblioteca.");
         } else {
-            
             String emailAutor = Console.lerString("Digite o email do autor:");
             String biografiaAutor = Console.lerString("Digite a biografia do autor:");
             autorExistente = new Autor(nomeAutor, emailAutor, biografiaAutor);
@@ -132,7 +128,7 @@ public class GerenciadorBiblioteca {
                 Emprestimo emprestimo = new Emprestimo(biblioteca.getEmprestimos().size() + 1, usuario, livro, LocalDate.now(), LocalDate.now().plusDays(14));
                 biblioteca.realizarEmprestimo(emprestimo);
                 System.out.println("Empréstimo realizado com sucesso!");
-            } catch (LivroNaoDisponivelException e) {
+            } catch (Biblioteca.LivroNaoDisponivelException e) {
                 System.out.println(e.getMessage());
             }
         } else {
@@ -198,19 +194,5 @@ public class GerenciadorBiblioteca {
         } catch (IOException e) {
             System.out.println("Erro ao salvar dados: " + e.getMessage());
         }
-    }
-
-    private void carregarDados() {
-        try {
-            biblioteca.carregarDados();
-            System.out.println("Dados carregados com sucesso!");
-        } catch (IOException e) {
-            System.out.println("Erro ao carregar dados: " + e.getMessage());
-        }
-    }
-
-    public static void main(String[] args) {
-        GerenciadorBiblioteca gerenciador = new GerenciadorBiblioteca();
-        gerenciador.iniciar();
     }
 }

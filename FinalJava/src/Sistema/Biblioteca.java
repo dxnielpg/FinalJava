@@ -1,4 +1,5 @@
 package Sistema;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +11,25 @@ import Models.Usuario;
 import Persistencia.BibliotecaPersistencia;
 
 public class Biblioteca {
+    // Listas para armazenar livros, usuários, empréstimos e autores
     private List<Livro> livros;
     private List<Usuario> usuarios;
     private List<Emprestimo> emprestimos;
     private List<Autor> autores;
+    
+    // Objetos para persistência de dados
     private BibliotecaPersistencia<Livro> persistenciaLivro;
     private BibliotecaPersistencia<Usuario> persistenciaUsuario;
     private BibliotecaPersistencia<Emprestimo> persistenciaEmprestimo;
 
     public Biblioteca() {
+        // Inicialização das listas
         this.livros = new ArrayList<>();
         this.usuarios = new ArrayList<>();
         this.emprestimos = new ArrayList<>();
         this.autores = new ArrayList<>();
+        
+        // Inicialização das instâncias de persistência para livros
         this.persistenciaLivro = new BibliotecaPersistencia<>(new BibliotecaPersistencia.Converter<>() {
             @Override
             public String toString(Livro livro) {
@@ -34,6 +41,8 @@ public class Biblioteca {
                 return Livro.fromString(str);
             }
         });
+        
+        // Inicialização das instâncias de persistência para usuários
         this.persistenciaUsuario = new BibliotecaPersistencia<>(new BibliotecaPersistencia.Converter<>() {
             @Override
             public String toString(Usuario usuario) {
@@ -45,6 +54,8 @@ public class Biblioteca {
                 return Usuario.fromString(str);
             }
         });
+        
+        // Inicialização das instâncias de persistência para empréstimos
         this.persistenciaEmprestimo = new BibliotecaPersistencia<>(new BibliotecaPersistencia.Converter<>() {
             @Override
             public String toString(Emprestimo emprestimo) {
@@ -56,7 +67,13 @@ public class Biblioteca {
                 return Emprestimo.fromString(str);
             }
         });
+    }
 
+    // Exceção LivroNaoDisponivelException como classe interna
+    public static class LivroNaoDisponivelException extends Exception {
+        public LivroNaoDisponivelException(String mensagem) {
+            super(mensagem);
+        }
     }
 
     // Métodos para gerenciar livros
@@ -97,18 +114,26 @@ public class Biblioteca {
 
     // Métodos para gerenciar empréstimos
     public void realizarEmprestimo(Emprestimo emprestimo) throws LivroNaoDisponivelException {
+        // Verifica se o livro está disponível para empréstimo
         if (!emprestimo.getLivro().isDisponivel()) {
             throw new LivroNaoDisponivelException("Livro não está disponível para empréstimo");
         }
+        
+        // Marca o livro como indisponível
         emprestimo.getLivro().setDisponivel(false);
+        
+        // Adiciona o empréstimo à lista de empréstimos
         emprestimos.add(emprestimo);
 
-        // Adicionar empréstimo ao histórico do usuário
+        // Adiciona o empréstimo ao histórico do usuário
         emprestimo.getUsuario().adicionarEmprestimoAoHistorico(emprestimo);
     }
 
     public void devolverEmprestimo(Emprestimo emprestimo) {
+        // Marca o livro como disponível
         emprestimo.getLivro().setDisponivel(true);
+        
+        // Remove o empréstimo da lista de empréstimos
         emprestimos.remove(emprestimo);
     }
 
@@ -151,11 +176,5 @@ public class Biblioteca {
         persistenciaLivro.salvar(livros, "livros.txt");
         persistenciaUsuario.salvar(usuarios, "usuarios.txt");
         persistenciaEmprestimo.salvar(emprestimos, "emprestimos.txt");
-    }
-
-    public void carregarDados() throws IOException {
-        livros = persistenciaLivro.carregar("livros.txt");
-        usuarios = persistenciaUsuario.carregar("usuarios.txt");
-        emprestimos = persistenciaEmprestimo.carregar("emprestimos.txt");
     }
 }

@@ -59,9 +59,11 @@ public class Emprestimo {
 
     @Override
     public String toString() {
-        return "Emprestimo{" + "id=" + id + ", usuario=" + usuario.getDetalhes() + ", livro=" + livro + ", dataEmprestimo=" + dataEmprestimo + ", dataDevolucao=" + dataDevolucao + '}';
+        return "Empréstimo ID: " + id + ", Livro: " + livro.getTitulo() + ", Usuário: " + usuario.getNome() +
+               ", Data de Empréstimo: " + dataEmprestimo + ", Data de Devolução: " + dataDevolucao;
     }
-
+    
+    //Método para converter as informações da entidade para o txt
     public static Emprestimo fromString(String linha) {
         String[] partes = linha.split(";");
         if (partes.length == 5) {

@@ -1,38 +1,32 @@
 package Persistencia;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BibliotecaPersistencia<T> {
 
+    // Interface Converter para lidar com a conversão de objetos para String e vice-versa
     private final Converter<T> converter;
 
+    // Construtor que recebe um objeto Converter para operações de conversão
     public BibliotecaPersistencia(Converter<T> converter) {
         this.converter = converter;
     }
 
+    // Método para salvar uma lista de objetos em um arquivo
     public void salvar(List<T> lista, String arquivo) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo))) {
+            // Itera sobre a lista de objetos
             for (T item : lista) {
+                // Converte cada objeto para String usando o método toString do Converter
                 writer.write(converter.toString(item));
-                writer.newLine();
+                writer.newLine(); // Escreve uma nova linha após cada objeto
             }
         }
     }
 
-    public List<T> carregar(String arquivo) throws IOException {
-        List<T> lista = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(arquivo))) {
-            String linha;
-            while ((linha = reader.readLine()) != null) {
-                lista.add(converter.fromString(linha));
-            }
-        }
-        return lista;
-    }
-
+    // Interface para definir os métodos de conversão de/para String
     public interface Converter<T> {
-        String toString(T obj);
-        T fromString(String str);
+        String toString(T obj); // Converte objeto para String
+        T fromString(String linha); // Converte String para objeto
     }
 }
