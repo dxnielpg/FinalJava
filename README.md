@@ -61,7 +61,7 @@ Passos para Execução
 
 Clone este repositório para sua máquina local:
 git clone https://github.com/dxnielpg/FinalJava
-Compile o código
+Compile o código no App.java
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Referências e Recursos
 

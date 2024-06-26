@@ -42,9 +42,12 @@ public class Usuario extends Pessoa {
 
     @Override
     public String getDetalhes() {
-        return "Nome: " + getNome() + ", Email: " + getEmail() + ", Endereço: " + endereco;
+        return "Usuario: \n" +
+        "Nome: " + getNome() + 
+        ", Email: " + getEmail() + 
+        ", Endereço: " + endereco;
     }
-
+    //Método FromString para converter string para a persistencia
     public static Usuario fromString(String linha) {
         String[] partes = linha.split(",");
         if (partes.length == 3) {

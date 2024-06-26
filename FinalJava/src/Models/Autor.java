@@ -18,7 +18,10 @@ public class Autor extends Pessoa {
 
     @Override
     public String getDetalhes() {
-        return "Autor: " + getNome() + ", Email: " + getEmail() + ", Biografia: " + biografia;
+        return "Autor: \n" +
+        "Nome: " + getNome() + 
+        ", Email: " + getEmail() + 
+        ", Endereço: " + biografia;
     }
 
     public static Autor fromString(String linha) {
